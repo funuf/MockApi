@@ -1,11 +1,10 @@
 package fun.hellofun.service;
 
 import com.alibaba.fastjson.JSON;
-import fun.hellofun.bean.InterpreterResult;
+import fun.hellofun.command.InterpreterResult;
 import fun.hellofun.jUtils.classes.map.R;
 import okio.Okio;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,7 +22,7 @@ public class CommandHandler {
             case MultiSpace:
                 return R.error("Too many Spaces(太多空格).");
             case InvalidStartWith:
-                return R.error("Valid command is start with capi(合法命令以capi开头).");
+                return R.error("Valid command is start with mock(合法命令以mock开头).");
             case MissPart:
                 return R.error("Valid command is contain two words at least(合法命令至少包含两个单词).");
             case JSON:

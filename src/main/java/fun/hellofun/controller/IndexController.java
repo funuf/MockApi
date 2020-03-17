@@ -32,7 +32,7 @@ public class IndexController {
      */
     @RequestMapping("/")
     public String nothing() {
-        return "Command(Custom) Application Programming Interface is running,command can not be empty or nothing is matched.";
+        return "Command-style Mock Application Programming Interface is running,command can not be empty or nothing is matched.";
     }
 
     /**
