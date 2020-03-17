@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>fun.hellofun</groupId>
-	<artifactId>capi</artifactId>
+	<artifactId>MockApi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>capi</name>
-	<description>Command(Custom) Application Programming Interface</description>
+	<name>MockApi</name>
+	<description>Command-style Mock Application Programming Interface</description>
 
 	<properties>
 		<java.version>1.8</java.version>
