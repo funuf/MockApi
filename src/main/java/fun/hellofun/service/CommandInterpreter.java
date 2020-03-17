@@ -29,6 +29,8 @@ public class CommandInterpreter {
             return InterpreterResult.MissPart;
         }
 
+
+
         // list命令：limit默认=20  非法limit（小于1）时，按20返回    topic默认为没有分类，分类值可单可多
         // eg:   mockapi list text --limit=n --topic=name,opetry,soup  --ok=0.35
         // eg:   mockapi list image --limit=n --topic=animal,boy,car,food,girl,landscape,plant  --ok=0.35

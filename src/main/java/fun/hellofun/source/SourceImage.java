@@ -1,9 +1,9 @@
 package fun.hellofun.source;
 
 import com.alibaba.fastjson.JSON;
-import fun.hellofun.topic.ImageTopic;
+import fun.hellofun.command.topic.ImageTopic;
 import fun.hellofun.jUtils.predicate.empty.Empty;
-import fun.hellofun.topic.Topic;
+import fun.hellofun.command.topic.Topic;
 import okio.Okio;
 import org.springframework.util.ResourceUtils;
 
@@ -73,7 +73,6 @@ class SourceImage extends Source<String> {
                 return PLANTS;
             case LANDSCAPE:
                 return LANDSCAPES;
-            case ALL:
             default:
                 return new ArrayList<String>() {{
                     addAll(ANIMALS);

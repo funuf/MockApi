@@ -1,7 +1,7 @@
 package fun.hellofun.source;
 
-import fun.hellofun.topic.ImageTopic;
-import fun.hellofun.topic.Topic;
+import fun.hellofun.command.topic.ImageTopic;
+import fun.hellofun.command.topic.Topic;
 
 import java.util.List;
 
@@ -11,12 +11,12 @@ import java.util.List;
  */
 public abstract class Source<T> {
 
-    private static final SourceImage IMAGE = new SourceImage();
-
     /**
      * 默认list接口的元素个数
      */
-    protected int DEFAULT_LIMIT = 20;
+    public static int DEFAULT_LIMIT = 20;
+
+    private static final SourceImage IMAGE = new SourceImage();
 
     /**
      * 获取单个元素
