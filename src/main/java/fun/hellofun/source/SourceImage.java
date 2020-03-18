@@ -99,7 +99,6 @@ class SourceImage extends Source<String> {
     private void init() {
         if (Empty.yes(ANIMALS, BOYS, CARS, FOODS, GIRLS, LANDSCAPES, PLANTS, BANNERS)) {
             try {
-
                 ANIMALS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/animal.json").getInputStream())).readUtf8(), String.class);
                 BOYS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/boy.json").getInputStream())).readUtf8(), String.class);
                 CARS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/car.json").getInputStream())).readUtf8(), String.class);
@@ -108,14 +107,6 @@ class SourceImage extends Source<String> {
                 LANDSCAPES = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/landscape.json").getInputStream())).readUtf8(), String.class);
                 PLANTS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/plant.json").getInputStream())).readUtf8(), String.class);
                 BANNERS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/banner.json").getInputStream())).readUtf8(), String.class);
-
-               /* BOYS = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/boy.json"))).readUtf8(), String.class);
-                CARS = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/car.json"))).readUtf8(), String.class);
-                FOODS = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/food.json"))).readUtf8(), String.class);
-                GIRLS = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/girl.json"))).readUtf8(), String.class);
-                LANDSCAPES = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/landscape.json"))).readUtf8(), String.class);
-                PLANTS = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/plant.json"))).readUtf8(), String.class);
-                BANNERS = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/banner.json"))).readUtf8(), String.class);*/
             } catch (IOException e) {
                 e.printStackTrace();
             }

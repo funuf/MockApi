@@ -34,7 +34,10 @@ public interface Topic {
                                 result.add(topic);
                             }
                         }
-                        return result;
+                        if (Empty.no(result)) {
+                            return result;
+                        }
+                        break;
                     // TODO: 2020/3/17 其他主题
                     case VIDEO:
                         break;
