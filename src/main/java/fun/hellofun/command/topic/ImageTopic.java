@@ -20,6 +20,7 @@ public enum ImageTopic implements Topic {
         this.mark = mark;
     }
 
+    @Override
     public String getMark() {
         return mark;
     }

@@ -1,9 +1,11 @@
 package fun.hellofun.source;
 
+import fun.hellofun.command.ItemType;
 import fun.hellofun.command.topic.ImageTopic;
+import fun.hellofun.command.topic.TextTopic;
 import fun.hellofun.command.topic.Topic;
+import fun.hellofun.command.topic.VideoTopic;
 import fun.hellofun.jUtils.predicate.empty.Empty;
-import io.reactivex.rxjava3.core.Observable;
 import okio.Okio;
 import org.springframework.core.io.ClassPathResource;
 
@@ -28,7 +30,11 @@ public abstract class Source<T> {
      */
     public static String DEFAULT_FILE_PATH = null;
 
+    private static final SourceText TEXT = new SourceText();
+
     private static final SourceImage IMAGE = new SourceImage();
+
+    private static final SourceVideo VIDEO = new SourceVideo();
 
     /**
      * 获取单个元素
@@ -41,6 +47,13 @@ public abstract class Source<T> {
     protected abstract List<T> list(Topic topic, Integer limit);
 
     /**
+     * 单个文本
+     */
+    public static String text(TextTopic textTopic) {
+        return TEXT.get(textTopic);
+    }
+
+    /**
      * 单张图片
      */
     public static String image(ImageTopic imageTopic) {
@@ -48,17 +61,32 @@ public abstract class Source<T> {
     }
 
     /**
-     * 多张图片
+     * 单个视频
      */
-    public static List<String> images(List<ImageTopic> topics, Integer limit) {
+    public static String video(VideoTopic videoTopic) {
+        return VIDEO.get(videoTopic);
+    }
+
+    /**
+     * 取多个 文本、图片、视频
+     */
+    public static <T extends Topic> List<String> take(ItemType type, List<T> topics, Integer limit) {
+        Source source = null;
+        if (type == ItemType.IMAGE) {
+            source = IMAGE;
+        } else if (type == ItemType.TEXT) {
+            source = TEXT;
+        } else if (type == ItemType.VIDEO) {
+            source = VIDEO;
+        }
         if (Empty.yes(topics)) {
-            return IMAGE.list(null, limit);
+            return source.list(null, limit);
         } else if (topics.size() == 1) {
-            return IMAGE.list(topics.get(0), limit);
+            return source.list(topics.get(0), limit);
         } else {
             List<String> result = new ArrayList<>();
             do {
-                result.addAll(IMAGE.list(topics.get(new Random().nextInt(topics.size())), new Random().nextInt(3)));
+                result.addAll(source.list(topics.get(new Random().nextInt(topics.size())), new Random().nextInt(3)));
             } while (limit > result.size());
             return result.subList(0, limit);
         }

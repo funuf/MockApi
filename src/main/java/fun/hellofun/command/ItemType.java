@@ -7,8 +7,7 @@ package fun.hellofun.command;
 public enum ItemType {
     TEXT(new String[]{"text", "txt"}),
     IMAGE(new String[]{"image", "img", "photo", "picture"}),
-    VIDEO(new String[]{"video"}),
-    RICH(new String[]{"rich", "article"});
+    VIDEO(new String[]{"video"});
 
     private String[] marks;
 

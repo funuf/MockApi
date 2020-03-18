@@ -3,6 +3,7 @@ package fun.hellofun.utils.handler;
 import fun.hellofun.command.ItemType;
 import fun.hellofun.command.topic.ImageTopic;
 import fun.hellofun.command.topic.Topic;
+import fun.hellofun.command.topic.VideoTopic;
 import fun.hellofun.jUtils.predicate.empty.Empty;
 import fun.hellofun.source.Source;
 import fun.hellofun.utils.check.ValidResult;
@@ -26,6 +27,14 @@ public class GetHandler {
 
         if (result.getType() == ItemType.IMAGE) {
             return Source.image(allTopic ? null : ((ImageTopic) topics.get(0)));
+        }
+
+        if (result.getType() == ItemType.VIDEO) {
+            return Source.video(allTopic ? null : ((VideoTopic) topics.get(0)));
+        }
+
+        if (result.getType() == ItemType.TEXT) {
+            return Source.video(allTopic ? null : ((VideoTopic) topics.get(0)));
         }
 
 
