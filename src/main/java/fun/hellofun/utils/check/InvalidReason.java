@@ -1,4 +1,4 @@
-package fun.hellofun.utils;
+package fun.hellofun.utils.check;
 
 /**
  * 该类由 <b>张东冬</b> 于 2020年3月16日 星期一 15时35分37秒 创建；<br>

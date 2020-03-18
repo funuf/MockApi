@@ -3,9 +3,9 @@ package fun.hellofun.service;
 import fun.hellofun.command.*;
 import fun.hellofun.command.topic.Topic;
 import fun.hellofun.jUtils.predicate.empty.Empty;
-import fun.hellofun.utils.Check;
-import fun.hellofun.utils.InvalidReason;
-import fun.hellofun.utils.ValidResult;
+import fun.hellofun.utils.check.Check;
+import fun.hellofun.utils.check.InvalidReason;
+import fun.hellofun.utils.check.ValidResult;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -56,8 +56,8 @@ public class CommandChecker {
         }
 
         List<Topic> topics = Topic.extract(parts, itemType);
-        Limit limit = Limit.extract(parts, cmd);
         Hit hit = Hit.extract(parts);
+        Limit limit = Limit.extract(parts, cmd);
 
         File file = null;
         if (cmd == Command.JSON || cmd == Command.TEMPLATE) {

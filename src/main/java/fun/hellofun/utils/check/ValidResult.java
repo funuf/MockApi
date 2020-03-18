@@ -1,4 +1,4 @@
-package fun.hellofun.utils;
+package fun.hellofun.utils.check;
 
 import fun.hellofun.command.Command;
 import fun.hellofun.command.Hit;

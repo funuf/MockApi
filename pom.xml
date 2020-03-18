@@ -70,6 +70,12 @@
 			<version>1.13.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>io.reactivex.rxjava3</groupId>
+			<artifactId>rxjava</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+
 
 	</dependencies>
 

@@ -31,6 +31,8 @@ public class Limit {
                 int i = 0;
                 try {
                     i = new BigDecimal(part.split("=")[1]).intValue();
+                } catch (Exception e) {
+                    // no-op
                 } finally {
                     if (0 == i) {
                         return new Limit(Source.DEFAULT_LIMIT);
@@ -49,8 +51,8 @@ public class Limit {
                     return new Limit(Source.DEFAULT_LIMIT);
                 }
                 return new Limit(Math.abs(i));
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                // no-op
             }
         }
 

@@ -2,14 +2,19 @@ package fun.hellofun.source;
 
 import fun.hellofun.command.topic.ImageTopic;
 import fun.hellofun.command.topic.Topic;
+import fun.hellofun.jUtils.predicate.empty.Empty;
+import io.reactivex.rxjava3.core.Observable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * 该类由 <b>张东冬</b> 于 2020年3月16日 星期一 19时06分00秒 创建；<br>
  * 作用是：<b>内嵌数据源</b>；<br>
  */
 public abstract class Source<T> {
+
     /**
      * 默认list接口的元素个数
      */
@@ -18,7 +23,7 @@ public abstract class Source<T> {
     /**
      * 文件默认父路径
      */
-    public static String DEFAULT_FILE_PATH = "";
+    public static String DEFAULT_FILE_PATH = null;
 
     private static final SourceImage IMAGE = new SourceImage();
 
@@ -42,8 +47,18 @@ public abstract class Source<T> {
     /**
      * 多张图片
      */
-    public static List<String> images(ImageTopic topic, Integer limit) {
-        return IMAGE.list(topic, limit);
+    public static List<String> images(List<ImageTopic> topics, Integer limit) {
+        if (Empty.yes(topics)) {
+            return IMAGE.list(null, limit);
+        } else if (topics.size() == 1) {
+            return IMAGE.list(topics.get(0), limit);
+        } else {
+            List<String> result = new ArrayList<>();
+            do {
+                result.addAll(IMAGE.list(topics.get(new Random().nextInt(topics.size())), new Random().nextInt(3)));
+            } while (limit > result.size());
+            return result.subList(0, limit);
+        }
     }
 
 }

@@ -30,7 +30,7 @@ public interface Topic {
                 switch (type) {
                     case IMAGE:
                         for (ImageTopic topic : ImageTopic.values()) {
-                            if (topic.getMark().equals(s.toLowerCase())) {
+                            if (topic.getMark().equals(s.toLowerCase()) && !result.contains(topic)) {
                                 result.add(topic);
                             }
                         }

@@ -5,10 +5,12 @@ import fun.hellofun.command.topic.ImageTopic;
 import fun.hellofun.jUtils.predicate.empty.Empty;
 import fun.hellofun.command.topic.Topic;
 import okio.Okio;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -46,7 +48,7 @@ class SourceImage extends Source<String> {
             limit = DEFAULT_LIMIT;
         }
         for (Integer i = 0; i < limit; i++) {
-            result.add(fromPool.get(new Random(fromPool.size()).nextInt()));
+            result.add(fromPool.get(new Random().nextInt(fromPool.size())));
         }
         return result;
     }
@@ -56,6 +58,9 @@ class SourceImage extends Source<String> {
      */
     private List<String> pool(ImageTopic topic) {
         init();
+        if (topic == null) {
+            return all();
+        }
         switch (topic) {
             case ANIMAL:
                 return ANIMALS;
@@ -74,30 +79,43 @@ class SourceImage extends Source<String> {
             case LANDSCAPE:
                 return LANDSCAPES;
             default:
-                return new ArrayList<String>() {{
-                    addAll(ANIMALS);
-                    addAll(BOYS);
-                    addAll(CARS);
-                    addAll(FOODS);
-                    addAll(GIRLS);
-                    addAll(LANDSCAPES);
-                    addAll(PLANTS);
-                    addAll(BANNERS);
-                }};
+                return all();
         }
+    }
+
+    private List<String> all() {
+        return new ArrayList<String>() {{
+            addAll(ANIMALS);
+            addAll(BOYS);
+            addAll(CARS);
+            addAll(FOODS);
+            addAll(GIRLS);
+            addAll(LANDSCAPES);
+            addAll(PLANTS);
+            addAll(BANNERS);
+        }};
     }
 
     private void init() {
         if (Empty.yes(ANIMALS, BOYS, CARS, FOODS, GIRLS, LANDSCAPES, PLANTS, BANNERS)) {
             try {
-                ANIMALS = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/animal.json"))).readUtf8(), String.class);
-                BOYS = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/boy.json"))).readUtf8(), String.class);
+
+                ANIMALS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/animal.json").getInputStream())).readUtf8(), String.class);
+                BOYS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/boy.json").getInputStream())).readUtf8(), String.class);
+                CARS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/car.json").getInputStream())).readUtf8(), String.class);
+                FOODS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/food.json").getInputStream())).readUtf8(), String.class);
+                GIRLS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/girl.json").getInputStream())).readUtf8(), String.class);
+                LANDSCAPES = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/landscape.json").getInputStream())).readUtf8(), String.class);
+                PLANTS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/plant.json").getInputStream())).readUtf8(), String.class);
+                BANNERS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/banner.json").getInputStream())).readUtf8(), String.class);
+
+               /* BOYS = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/boy.json"))).readUtf8(), String.class);
                 CARS = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/car.json"))).readUtf8(), String.class);
                 FOODS = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/food.json"))).readUtf8(), String.class);
                 GIRLS = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/girl.json"))).readUtf8(), String.class);
                 LANDSCAPES = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/landscape.json"))).readUtf8(), String.class);
                 PLANTS = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/plant.json"))).readUtf8(), String.class);
-                BANNERS = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/banner.json"))).readUtf8(), String.class);
+                BANNERS = JSON.parseArray(Okio.buffer(Okio.source(ResourceUtils.getFile("image/banner.json"))).readUtf8(), String.class);*/
             } catch (IOException e) {
                 e.printStackTrace();
             }

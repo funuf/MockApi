@@ -7,19 +7,19 @@ import java.math.BigDecimal;
  * 作用是：<b>命中率：  [0,1]区间的值，忽略正负数，以绝对值为准</b>；<br>
  */
 public class Hit {
-    private double hit;
+    private double value;
 
     public Hit(double hit) {
-        this.hit = hit;
+        this.value = hit;
     }
 
-    public double getHit() {
-        if (hit >= 1) {
+    public double getValue() {
+        if (value >= 1) {
             return 1;
-        } else if (hit <= 0) {
+        } else if (value <= 0) {
             return 0;
         } else {
-            return hit;
+            return value;
         }
     }
 
@@ -29,7 +29,7 @@ public class Hit {
             if (part.contains("ok=") || part.contains("hit=")) {
                 try {
                     return new Hit(new BigDecimal(part.split("=")[1]).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                } finally {
+                } catch (Exception e) {
                     return new Hit(1);
                 }
             }
@@ -40,7 +40,7 @@ public class Hit {
             if (part.contains(".")) {
                 try {
                     return new Hit(new BigDecimal(part).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                } finally {
+                } catch (Exception e) {
                     // no-op
                 }
             }
