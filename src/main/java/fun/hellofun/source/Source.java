@@ -4,7 +4,10 @@ import fun.hellofun.command.topic.ImageTopic;
 import fun.hellofun.command.topic.Topic;
 import fun.hellofun.jUtils.predicate.empty.Empty;
 import io.reactivex.rxjava3.core.Observable;
+import okio.Okio;
+import org.springframework.core.io.ClassPathResource;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -58,6 +61,19 @@ public abstract class Source<T> {
                 result.addAll(IMAGE.list(topics.get(new Random().nextInt(topics.size())), new Random().nextInt(3)));
             } while (limit > result.size());
             return result.subList(0, limit);
+        }
+    }
+
+
+    /**
+     * 类路径文件中的内容（字符串形式）
+     */
+    protected String classpathFileString(String path) {
+        try {
+            return Okio.buffer(Okio.source(new ClassPathResource(path).getInputStream())).readUtf8();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
         }
     }
 

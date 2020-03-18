@@ -98,18 +98,14 @@ class SourceImage extends Source<String> {
 
     private void init() {
         if (Empty.yes(ANIMALS, BOYS, CARS, FOODS, GIRLS, LANDSCAPES, PLANTS, BANNERS)) {
-            try {
-                ANIMALS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/animal.json").getInputStream())).readUtf8(), String.class);
-                BOYS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/boy.json").getInputStream())).readUtf8(), String.class);
-                CARS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/car.json").getInputStream())).readUtf8(), String.class);
-                FOODS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/food.json").getInputStream())).readUtf8(), String.class);
-                GIRLS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/girl.json").getInputStream())).readUtf8(), String.class);
-                LANDSCAPES = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/landscape.json").getInputStream())).readUtf8(), String.class);
-                PLANTS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/plant.json").getInputStream())).readUtf8(), String.class);
-                BANNERS = JSON.parseArray(Okio.buffer(Okio.source(new ClassPathResource("image/banner.json").getInputStream())).readUtf8(), String.class);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            ANIMALS = JSON.parseArray(classpathFileString("image/animal.json"), String.class);
+            BOYS = JSON.parseArray(classpathFileString("image/boy.json"), String.class);
+            CARS = JSON.parseArray(classpathFileString("image/car.json"), String.class);
+            FOODS = JSON.parseArray(classpathFileString("image/food.json"), String.class);
+            GIRLS = JSON.parseArray(classpathFileString("image/girl.json"), String.class);
+            LANDSCAPES = JSON.parseArray(classpathFileString("image/landscape.json"), String.class);
+            PLANTS = JSON.parseArray(classpathFileString("image/plant.json"), String.class);
+            BANNERS = JSON.parseArray(classpathFileString("image/banner.json"), String.class);
         }
     }
 }
