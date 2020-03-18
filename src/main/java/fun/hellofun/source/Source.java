@@ -10,11 +10,15 @@ import java.util.List;
  * 作用是：<b>内嵌数据源</b>；<br>
  */
 public abstract class Source<T> {
-
     /**
      * 默认list接口的元素个数
      */
     public static int DEFAULT_LIMIT = 20;
+
+    /**
+     * 文件默认父路径
+     */
+    public static String DEFAULT_FILE_PATH = "";
 
     private static final SourceImage IMAGE = new SourceImage();
 

@@ -2,7 +2,7 @@ package fun.hellofun.controller;
 
 import fun.hellofun.jUtils.classes.map.R;
 import fun.hellofun.service.CommandHandler;
-import fun.hellofun.service.CommandInterpreter;
+import fun.hellofun.service.CommandChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ public class IndexController {
      * 命令解析器
      */
     @Autowired
-    private CommandInterpreter interpreter;
+    private CommandChecker checker;
 
     /**
      * 命令处理器
@@ -49,6 +49,6 @@ public class IndexController {
      */
     @RequestMapping("/{command}")
     public R run(@PathVariable("command") String command) {
-        return handler.handle(interpreter.test(command));
+        return handler.handle(checker.check(command));
     }
 }

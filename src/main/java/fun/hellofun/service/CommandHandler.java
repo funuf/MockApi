@@ -1,14 +1,10 @@
 package fun.hellofun.service;
 
-import com.alibaba.fastjson.JSON;
-import fun.hellofun.command.InterpreterResult;
+import fun.hellofun.utils.Check;
+import fun.hellofun.utils.InvalidReason;
 import fun.hellofun.jUtils.classes.map.R;
-import okio.Okio;
+import fun.hellofun.utils.ValidResult;
 import org.springframework.stereotype.Service;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * 该类由 <b>张东冬</b> 于 2020年3月16日 星期一 15时29分51秒 创建；<br>
@@ -17,30 +13,43 @@ import java.io.IOException;
 @Service
 public class CommandHandler {
 
-    public R handle(InterpreterResult command) {
-        switch (command) {
-            case MultiSpace:
-                return R.error("Too many Spaces(太多空格).");
-            case InvalidStartWith:
-                return R.error("Valid command is start with mock(合法命令以mock开头).");
-            case MissPart:
-                return R.error("Valid command is contain two words at least(合法命令至少包含两个单词).");
-            case JSON:
+    public R handle(Check checkResult) {
+        if (checkResult instanceof InvalidReason) {
+            InvalidReason invalidReason = ((InvalidReason) checkResult);
+            switch (invalidReason) {
+                case MultiSpace:
+                    return R.error("Too many Spaces(太多空格).");
+                case InvalidStartWith:
+                    return R.error("Valid command is start with mockapi(合法命令以mockapi开头).");
+                case MissPart:
+                    return R.error("Valid command is contain two words at least(合法命令至少包含两个单词).");
+                case InvalidCommand:
+                    return R.error("Valid command support list/get/json/template/config(合法命令仅支持list/get/json/template/config).");
+                case MissItemType:
+                    return R.error("Command list/get need explicit type,eg:text/video/image/rich(list/get命令需要明确条目类型).");
+                case MissTragetFile:
+                    return R.error("Command template/json need specify a file by --path or --file(template/json命令需要指定一个文件).");
+                case FileNotExist:
+                    return R.error("File not exist(文件不存在).");
+                default:
+                    return R.error("System Exception(系统异常).");
+            }
+        }
+        ValidResult command = (ValidResult) checkResult;
 
 
 //        new File("/").list() // D://下的直接文件（夹）
 //        new File(".") // pom.xml所在文件夹下所有内容
-                try {
+            /*try {
 //                    return R.ok(JSON.parse(Okio.buffer(Okio.source(new File("./heihei.json"))).readUtf8()));
-                    return R.ok(JSON.parse(Okio.buffer(Okio.source(new File("./haha.txt"))).readUtf8()));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    return R.error("文件未找到");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return R.error("io异常：" + e.getMessage());
-                }
-        }
+                return R.ok(JSON.parse(Okio.buffer(Okio.source(new File("./haha.txt"))).readUtf8()));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return R.error("文件未找到");
+            } catch (IOException e) {
+                e.printStackTrace();
+                return R.error("io异常：" + e.getMessage());
+            }*/
         return R.ok();
     }
 
