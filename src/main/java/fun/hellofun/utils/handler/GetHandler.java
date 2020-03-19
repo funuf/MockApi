@@ -1,7 +1,7 @@
 package fun.hellofun.utils.handler;
 
-import fun.hellofun.command.ItemType;
 import fun.hellofun.command.topic.ImageTopic;
+import fun.hellofun.command.topic.TextTopic;
 import fun.hellofun.command.topic.Topic;
 import fun.hellofun.command.topic.VideoTopic;
 import fun.hellofun.jUtils.predicate.empty.Empty;
@@ -24,19 +24,22 @@ public class GetHandler {
         if (Empty.yes(topics)) {
             allTopic = true;
         }
-
-        if (result.getType() == ItemType.IMAGE) {
-            return Source.image(allTopic ? null : ((ImageTopic) topics.get(0)));
+        switch (result.getType()) {
+            case IMAGE:
+                return Source.image(allTopic ? null : ((ImageTopic) topics.get(0)));
+            case VIDEO:
+                return Source.video(allTopic ? null : ((VideoTopic) topics.get(0)));
+            case TEXT:
+                return Source.text(allTopic ? null : ((TextTopic) topics.get(0)));
+            case INTEGER:
+                return Source.integer(result.getLimit());
+            case FLOAT:
+                return Source.floatt(result.getLimit());
+            case BOOLEAN:
+                return Source.bool();
+            case TIME:
+                return Source.time(result.getTimeFormat());
         }
-
-        if (result.getType() == ItemType.VIDEO) {
-            return Source.video(allTopic ? null : ((VideoTopic) topics.get(0)));
-        }
-
-        if (result.getType() == ItemType.TEXT) {
-            return Source.video(allTopic ? null : ((VideoTopic) topics.get(0)));
-        }
-
 
         return "Waiting develop";
     }

@@ -20,8 +20,8 @@ public class SourceVideo extends Source<String> {
     }
 
     @Override
-    protected List<String> list(Topic topic, Integer limit) {
-        return take(limit, pool(((VideoTopic) topic)));
+    protected List<String> list(Topic topic, Integer count) {
+        return take(count, pool(((VideoTopic) topic)));
     }
 
     private List<String> MUSICS = null;
@@ -30,12 +30,12 @@ public class SourceVideo extends Source<String> {
     /**
      * 从数据池中取值
      */
-    private List<String> take(Integer limit, List<String> fromPool) {
+    private List<String> take(Integer count, List<String> fromPool) {
         List<String> result = new ArrayList<>();
-        if (limit == null) {
-            limit = DEFAULT_LIMIT;
+        if (count == null) {
+            count = DEFAULT_LIMIT;
         }
-        for (Integer i = 0; i < limit; i++) {
+        for (Integer i = 0; i < count; i++) {
             result.add(fromPool.get(new Random().nextInt(fromPool.size())));
         }
         return result;

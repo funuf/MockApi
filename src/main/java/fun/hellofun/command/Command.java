@@ -7,9 +7,9 @@ package fun.hellofun.command;
 public enum Command {
     LIST("list"),
     GET("get"),
-    TEMPLATE("template"),
     JSON("json"),
     CONFIG("config");
+
     private String value;
 
     Command(String value) {

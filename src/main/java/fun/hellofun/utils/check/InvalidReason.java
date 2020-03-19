@@ -19,4 +19,12 @@ public enum InvalidReason implements Check{
     MissTragetFile,
     // json/template命令指向的文件不存在
     FileNotExist,
+    // 区间端点非法
+    InvalidLimitEndpoint,
+    // 缺少区间端点
+    MissingLimitEndpoint,
+    // 区间溢出
+    LimitOverflow,
+    // 其他
+    OTHER
 }

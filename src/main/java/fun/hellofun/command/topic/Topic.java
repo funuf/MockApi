@@ -59,6 +59,8 @@ public interface Topic {
             case VIDEO:
                 topics = VideoTopic.values();
                 break;
+            default:
+                return result;
         }
         for (Topic topic : topics) {
             map.put(topic.getMark(), topic);

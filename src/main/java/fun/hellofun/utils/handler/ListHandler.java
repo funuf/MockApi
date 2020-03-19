@@ -1,6 +1,5 @@
 package fun.hellofun.utils.handler;
 
-import fun.hellofun.command.ItemType;
 import fun.hellofun.source.Source;
 import fun.hellofun.utils.check.ValidResult;
 
@@ -11,12 +10,20 @@ import fun.hellofun.utils.check.ValidResult;
 public class ListHandler {
 
     public static Object handle(ValidResult result) {
-        if (result.getType() == ItemType.IMAGE
-                ||result.getType() == ItemType.VIDEO
-                ||result.getType() == ItemType.TEXT) {
-            return Source.take(result.getType(), result.getTopics(), result.getLimit().getCount());
+        switch (result.getType()) {
+            case IMAGE:
+            case VIDEO:
+            case TEXT:
+                return Source.take(result.getType(), result.getTopics(), result.getCount().getValue());
+            case INTEGER:
+                return Source.integers(result.getLimit(), result.getCount().getValue());
+            case FLOAT:
+                return Source.floats(result.getLimit(), result.getCount().getValue());
+            case BOOLEAN:
+                return Source.bools(result.getCount().getValue());
+            case TIME:
+                return Source.times(result.getTimeFormat(), result.getCount().getValue());
         }
-
         return "Waiting develop";
     }
 }

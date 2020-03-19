@@ -1,16 +1,17 @@
 package fun.hellofun.service;
 
-import com.alibaba.fastjson.JSON;
 import fun.hellofun.command.Command;
+import fun.hellofun.exception.InvalidLimitEndpointException;
+import fun.hellofun.exception.LimitOverflowException;
+import fun.hellofun.exception.MissingLimitEndpointException;
 import fun.hellofun.utils.check.Check;
 import fun.hellofun.utils.check.InvalidReason;
 import fun.hellofun.jUtils.classes.map.R;
 import fun.hellofun.utils.check.ValidResult;
+import fun.hellofun.utils.handler.JSONHandler;
 import fun.hellofun.utils.handler.GetHandler;
 import fun.hellofun.utils.handler.ListHandler;
 import org.springframework.stereotype.Service;
-
-import java.util.Random;
 
 /**
  * 该类由 <b>张东冬</b> 于 2020年3月16日 星期一 15时29分51秒 创建；<br>
@@ -34,9 +35,16 @@ public class CommandHandler {
                 case MissItemType:
                     return R.error("Command list/get need explicit type,eg:text/video/image/rich(list/get命令需要明确条目类型).");
                 case MissTragetFile:
-                    return R.error("Command template/json need specify a file by --path or --file(template/json命令需要指定一个文件).");
+                    return R.error("Command json need specify a file by --path or --file(json命令需要指定一个文件).");
                 case FileNotExist:
                     return R.error("File not exist(文件不存在).");
+                case InvalidLimitEndpoint:
+                    return R.error(InvalidLimitEndpointException.TIP);
+                case MissingLimitEndpoint:
+                    return R.error(MissingLimitEndpointException.TIP);
+                case LimitOverflow:
+                    return R.error(LimitOverflowException.TIP);
+                case OTHER:
                 default:
                     return R.error("System Exception(系统异常).");
             }
@@ -53,25 +61,21 @@ public class CommandHandler {
         }
 
         if (command.getCmd() == Command.GET) {
-            if (command.getLimit().getCount() > 1) {
+            if (command.getCount().getValue() > 1) {
                 return R.ok(ListHandler.handle(command));
             }
             return R.ok(GetHandler.handle(command));
         }
 
-
-//        new File("/").list() // D://下的直接文件（夹）
-//        new File(".") // pom.xml所在文件夹下所有内容
-            /*try {
-//                    return R.ok(JSON.parse(Okio.buffer(Okio.source(new File("./heihei.json"))).readUtf8()));
-                return R.ok(JSON.parse(Okio.buffer(Okio.source(new File("./haha.txt"))).readUtf8()));
-            } catch (FileNotFoundException e) {
+        if (command.getCmd() == Command.JSON) {
+            // 返回json 或 填充模板
+            try {
+                return R.ok(JSONHandler.get(command.getFile(), command.getCount() == null ? null : command.getCount().getValue()));
+            } catch (Exception e) {
                 e.printStackTrace();
-                return R.error("文件未找到");
-            } catch (IOException e) {
-                e.printStackTrace();
-                return R.error("io异常：" + e.getMessage());
-            }*/
+                return R.error(e.getMessage());
+            }
+        }
         return R.ok();
     }
 
