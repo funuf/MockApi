@@ -12,11 +12,11 @@
 
 ## 安装
 
-1. 【Windows】MockApi是一个Spring Boot 工程，如果你有Java开发能力，可以直接clone该项目，在IDE中运行体验；
+1. 【Windows】**MockApi**是一个Spring Boot 工程，如果你有Java开发能力，可以直接clone该项目，在IDE中运行体验；
 
 2. 【Windows】下载[MockApi.jar](https://github.com/he110fun/MockApi/raw/master/MockApi.jar)，然后在jar包所在目录启动命令行（Win+R）,执行```java -jar MockApi.jar```命令在10240端口运行，也可执行```java -jar MockApi.jar --server.port=xxx```自定义端口；
 
-3. 【Windows】方式2的缺点是不能关闭命令行窗口，否则MockApi也将终止。建议将MockApi.jar安装为Windows服务，方法如下：
+3. 【Windows】方式2的缺点是不能关闭命令行窗口，否则服务也将终止。建议将[MockApi.jar](https://github.com/he110fun/MockApi/raw/master/MockApi.jar)安装为Windows服务，方法如下：
     - 下载[MockApi.jar](https://github.com/he110fun/MockApi/raw/master/MockApi.jar)；
     - 下载[winsw](https://github.com/kohsuke/winsw/releases)项目的```WinSw.Net4.exe```文件；
     - 将```MockApi.jar```和```WinSw.Net4.exe```置于同一文件夹，并将```WinSw.Net4.exe```重命名为```MockApi.exe```；
@@ -66,6 +66,54 @@
 }
 ```
 
+#### 命令结构
+
+**MockApi**的命令由若干部分组成，如 ```mockapi cmd type topic limit ```，即```mockapi 操作 类型 主题 限制 ```
+
+比如:
+
+```mockapi get integer```
+
+```mockapi list boolean```
+
+```mockapi json file=D:.myproject\helloword\abc.ftl```
+
+
 #### 可用命令
 
 **MockApi**已支持的命令如下表所示：
+
+<table>
+    <tr>
+        <th>命令</th>
+        <th>类型</th>
+        <th>目标文件</th>
+        <th>主题</th>
+        <th>区间</th>
+        <th>数量</th>
+        <th>命中率</th>
+        <th>示例</th>
+        <th>含义</th>
+    </tr>
+    <tr>
+        <td rowspan="2">get</td>
+        <td>integer</td>
+        <td>-</td>
+        <td>-</td>
+        <td>[limit=]n，默认一个</td>
+        <td>[ok=]0.18，默认1</td>
+        <td>mockapi get integer 5 0.35</td>
+        <td>获取5个整型值</td>
+        <td>获取5个整型值</td>
+    </tr>
+    <tr>
+        <td>boolean</td>
+        <td>-</td>
+        <td>boy</td>
+        <td>同上</td>
+        <td>同上</td>
+        <td>mockapi get integer 5 0.35</td>
+        <td>获取5个整型值</td>
+        <td>获取5个整型值</td>
+    </tr>
+</table>
