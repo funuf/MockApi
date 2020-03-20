@@ -78,6 +78,53 @@
 
 ```mockapi json file=D:.myproject\helloword\abc.ftl```
 
+各部分的详细定义及取值见下表：
+
+<table>
+    <tr>
+        <th>组成部分</th>
+        <th>说明</th>
+        <th>支持写法</th>
+        <th>是否必须包含</th>
+    </tr>
+    <tr>
+        <td>mockapi</td>
+        <td>合法命令须以该单词开头</td>
+        <td>mockapi</td>
+        <td>【必】</td>
+    </tr>
+    <tr>
+        <td>cmd</td>
+        <td>代表本次操作的动作，目前支持get/list/json。<br>get表示需要一个元素；list表示需要一个集合；json表示需要自定义json结构。</td>
+        <td>get<br>list<br>json</td>
+        <td>【必】</td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>表示元素类型。目前支持integer/float/boolean/time/text/image/video。<br>分别代表 整型/浮点型/布尔值/时间戳/文本/图片url/视频url。<br>其中text/image/video都可认为是string类型，各自代表的含义不同罢了。</td>
+        <td>integer int<br>float<br>boolean bool<br>time timestamp<br>text txt<br>image img photo picture<br>video</td>
+        <td>cmd=get/list--【必】</td>
+    </tr>
+    <tr>
+        <td>topic</td>
+        <td>表示一个string类型的元素的具体指向类型，多个主题以<strong>英文逗号</strong>连接。<br>当type=text时，支持name,soup<br>当type=image时，支持animal,banner,boy,car,food,girl,landscape,plant<br>当type=video时，支持tiktok,music</td>
+        <td>-topic=animal<br>topic=animal<br>animal<br>-topic=animal,boy<br>topic=animal,boy<br>animal,boy</td>
+        <td>type=string---【选填】<br>默认所有</td>
+    </tr>
+    <tr>
+        <td>limit</td>
+        <td>数值元素的上下区间，当type=integer/float有效。需要以英文圆括号包裹</td>
+        <td>(min,max)<br>即(0,1024)<br>或(-100,100)</td>
+        <td>type=integer/float--【选填】<br>默认(0,100)</td>
+    </tr>
+    <tr>
+        <td>count</td>
+        <td>当cmd=get/list时，代表返回的元素个数。<br>当cmd=json且不用模板时，将指定的json数据作为元素，返回count值个元素的集合。<br></td>
+        <td>-count=n<br>topic=n<br>n<br><br>n为非0整数</td>
+        <td>【选填】</td>
+    </tr>
+</table>
+
 
 #### 可用命令
 
@@ -87,33 +134,109 @@
     <tr>
         <th>命令</th>
         <th>类型</th>
-        <th>目标文件</th>
+        <th>文件</th>
         <th>主题</th>
         <th>区间</th>
         <th>数量</th>
-        <th>命中率</th>
+        <th>命中</th>
+        <th>延时</th>
         <th>示例</th>
         <th>含义</th>
     </tr>
     <tr>
-        <td rowspan="2">get</td>
+        <td></td>
+        <td>数据代表的含义</td>
+        <td>json命令所需文件</td>
+        <td>动物、美食...</td>
+        <td>integer/float的上下限</td>
+        <td>元素个数：</td>
+        <td>成功几率</td>
+        <td>调用耗时</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td rowspan="9">get</td>
         <td>integer</td>
         <td>-</td>
         <td>-</td>
-        <td>[limit=]n，默认一个</td>
+        <td>(min,max)</td>
+        <td>[count=]3，默认1</td>
         <td>[ok=]0.18，默认1</td>
+        <td>-</td>
         <td>mockapi get integer 5 0.35</td>
-        <td>获取5个整型值</td>
-        <td>获取5个整型值</td>
+        <td>5个整型值</td>
     </tr>
     <tr>
+        <td>get</td>
+        <td>float</td>
+        <td>-</td>
+        <td>-</td>
+        <td>(min,max)</td>
+        <td>-</td>
+        <td>[ok=]0.18，默认1</td>
+        <td>-</td>
+        <td>mockapi get float 5 0.35</td>
+        <td>5个整型值</td>
+    </tr>
+    <tr>
+        <td>get</td>
         <td>boolean</td>
         <td>-</td>
-        <td>boy</td>
-        <td>同上</td>
-        <td>同上</td>
-        <td>mockapi get integer 5 0.35</td>
-        <td>获取5个整型值</td>
-        <td>获取5个整型值</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>[ok=]0.18，默认1</td>
+        <td>-</td>
+        <td>mockapi get boolean</td>
+        <td>随机布尔值</td>
+    </tr>
+    <tr>
+        <td>get</td>
+        <td>time</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>[ok=]0.18，默认1</td>
+        <td>-</td>
+        <td>mockapi get boolean</td>
+        <td>时间戳</td>
+    </tr>
+    <tr>
+        <td>get</td>
+        <td>text</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>[ok=]0.18，默认1</td>
+        <td>-</td>
+        <td>mockapi get boolean</td>
+        <td>时间戳</td>
+    </tr>
+    <tr>
+        <td>get</td>
+        <td>image</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>[ok=]0.18，默认1</td>
+        <td>-</td>
+        <td>mockapi get boolean</td>
+        <td>时间戳</td>
+    </tr>
+    <tr>
+        <td>get</td>
+        <td>video</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>[ok=]0.18，默认1</td>
+        <td>-</td>
+        <td>mockapi get boolean</td>
+        <td>时间戳</td>
     </tr>
 </table>
