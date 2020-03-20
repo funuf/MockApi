@@ -64,3 +64,6 @@ https://github.com/ReactiveX/RxJava
 // 下下一个版本
 // mockapi append text/image/video --topic=...  --file=存储数据的文件(全文件名/文件名)   --path=存储数据的文件所需的父目录
 // mockapi clear text/image/video --topic=...
+
+
+卸载windows服务：  sc delete serverName
