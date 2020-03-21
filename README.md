@@ -46,7 +46,7 @@
 
 #### 命令式接口
 
-所谓命令，比如```git clone origin https://github.com/he110fun/MockApi.git```就是一条克隆仓库的命令。
+命令，就是要让一个系统执行一件事，比如```git clone origin https://github.com/he110fun/MockApi.git```就是一条让git执行克隆仓库的命令。
 所谓命令式接口，指的是目标接口的请求路径是命令式的。
 
 比如```http://localhost:10240/mockapi get integer```表示的是要请求一个整形数字，本次请求将返回如下数据：
@@ -68,24 +68,14 @@
 
 #### 命令结构
 
-**MockApi**的命令由若干部分组成，如 ```mockapi cmd type topic limit ```，即```mockapi 操作 类型 主题 限制 ```
-
-比如:
-
-```mockapi get integer```
-
-```mockapi list boolean```
-
-```mockapi json file=D:.myproject\helloword\abc.ftl```
-
-各部分的详细定义及取值见下表：
+**MockApi**的命令由若干部分组成，如 ```mockapi cmd type topic limit count hit file delay```，除了```mockapi```和```cmd```的顺序固定，其他部分无顺序限制。各部分的详细定义及取值见下表：
 
 <table>
     <tr>
-        <th>组成部分</th>
+        <th>组成</th>
         <th>说明</th>
         <th>支持写法</th>
-        <th>是否必须包含</th>
+        <th>备注</th>
     </tr>
     <tr>
         <td>mockapi</td>
@@ -103,140 +93,177 @@
         <td>type</td>
         <td>表示元素类型。目前支持integer/float/boolean/time/text/image/video。<br>分别代表 整型/浮点型/布尔值/时间戳/文本/图片url/视频url。<br>其中text/image/video都可认为是string类型，各自代表的含义不同罢了。</td>
         <td>integer int<br>float<br>boolean bool<br>time timestamp<br>text txt<br>image img photo picture<br>video</td>
-        <td>cmd=get/list--【必】</td>
+        <td>cmd=get/list【必】</td>
     </tr>
     <tr>
         <td>topic</td>
         <td>表示一个string类型的元素的具体指向类型，多个主题以<strong>英文逗号</strong>连接。<br>当type=text时，支持name,soup<br>当type=image时，支持animal,banner,boy,car,food,girl,landscape,plant<br>当type=video时，支持tiktok,music</td>
-        <td>-topic=animal<br>topic=animal<br>animal<br>-topic=animal,boy<br>topic=animal,boy<br>animal,boy</td>
-        <td>type=string---【选填】<br>默认所有</td>
+        <td>topic=animal<br>animal<br>topic=animal,boy<br>animal,boy</td>
+        <td>type=string【选填】<br>默认所有</td>
     </tr>
     <tr>
         <td>limit</td>
-        <td>数值元素的上下区间，当type=integer/float有效。需要以英文圆括号包裹</td>
+        <td>数值元素的上下区间，当type=integer/float有效。需要以英文圆括号包裹，包含两个端点。</td>
         <td>(min,max)<br>即(0,1024)<br>或(-100,100)</td>
-        <td>type=integer/float--【选填】<br>默认(0,100)</td>
+        <td>type=integer/float<br>【选填】<br>默认(0,100)</td>
     </tr>
     <tr>
         <td>count</td>
         <td>当cmd=get/list时，代表返回的元素个数。<br>当cmd=json且不用模板时，将指定的json数据作为元素，返回count值个元素的集合。<br></td>
-        <td>-count=n<br>topic=n<br>n<br><br>n为非0整数</td>
+        <td>-count=n<br>n<br><br>n为非0整数</td>
+        <td>【选填】</td>
+    </tr>
+    <tr>
+        <td>hit</td>
+        <td>本次请求能够正常返回的几率，以介于0-1之间的浮点数标识，包含0和1。</td>
+        <td>ok=n<br>hit=n<br>n<br><br>n为浮点数</td>
+        <td>【选填】<br>默认1</td>
+    </tr>
+    <tr>
+        <td>delay</td>
+        <td>模拟本次接口的调用耗时，单位为秒</td>
+        <td>delay=n</td>
+        <td>【选填】<br>默认0：即时返回</td>
+    </tr>
+    <tr>
+        <td>file</td>
+        <td>当使用json命令时，需要指定一个json文件，MockApi将该文件的内容返回。<br><a href="http://www.baidu.com">了解更多</a></td>
+        <td>file=xxx<br>path=xxx</td>
+        <td>cmd=json【必填】</td>
+    </tr>
+    <tr>
+        <td>format</td>
+        <td>当type=time时，指定时间的展示样式，需用大括号包裹。参见<a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html" target="_blank">SimpleDateFormat</a>。</td>
+        <td>{yyyy年MM月dd日 HH时mm分ss秒}</td>
         <td>【选填】</td>
     </tr>
 </table>
 
 
-#### 可用命令
+#### 命令一览
 
 **MockApi**已支持的命令如下表所示：
 
 <table>
     <tr>
-        <th>命令</th>
-        <th>类型</th>
-        <th>文件</th>
-        <th>主题</th>
-        <th>区间</th>
-        <th>数量</th>
-        <th>命中</th>
-        <th>延时</th>
-        <th>示例</th>
-        <th>含义</th>
+        <th>cmd</th>
+        <th>type</th>
+        <th>file</th>
+        <th>limit</th>
+        <th>count</th>
+        <th>topic</th>
+        <th>format</th>
+        <th>hit</th>
+        <th>delay</th>
     </tr>
     <tr>
-        <td></td>
-        <td>数据代表的含义</td>
-        <td>json命令所需文件</td>
-        <td>动物、美食...</td>
-        <td>integer/float的上下限</td>
-        <td>元素个数：</td>
-        <td>成功几率</td>
-        <td>调用耗时</td>
-        <td>-</td>
-        <td>-</td>
-    </tr>
-    <tr>
-        <td rowspan="9">get</td>
+        <td rowspan="7">get/list</td>
         <td>integer</td>
         <td>-</td>
-        <td>-</td>
         <td>(min,max)</td>
-        <td>[count=]3，默认1</td>
-        <td>[ok=]0.18，默认1</td>
+        <td>count=n</td>
         <td>-</td>
-        <td>mockapi get integer 5 0.35</td>
-        <td>5个整型值</td>
+        <td>-</td>
+        <td>hit=x</td>
+        <td>delay=s</td>
     </tr>
     <tr>
         <td>get</td>
         <td>float</td>
         <td>-</td>
+        <td>同上</td>
+        <td>同上</td>
         <td>-</td>
-        <td>(min,max)</td>
         <td>-</td>
-        <td>[ok=]0.18，默认1</td>
-        <td>-</td>
-        <td>mockapi get float 5 0.35</td>
-        <td>5个整型值</td>
+        <td>同上</td>
+        <td>同上</td>
     </tr>
     <tr>
         <td>get</td>
         <td>boolean</td>
         <td>-</td>
         <td>-</td>
+        <td>同上</td>
         <td>-</td>
         <td>-</td>
-        <td>[ok=]0.18，默认1</td>
-        <td>-</td>
-        <td>mockapi get boolean</td>
-        <td>随机布尔值</td>
+        <td>同上</td>
+        <td>同上</td>
     </tr>
     <tr>
         <td>get</td>
         <td>time</td>
         <td>-</td>
         <td>-</td>
+        <td>同上</td>
         <td>-</td>
-        <td>-</td>
-        <td>[ok=]0.18，默认1</td>
-        <td>-</td>
-        <td>mockapi get boolean</td>
-        <td>时间戳</td>
+        <td>{format}</td>
+        <td>同上</td>
+        <td>同上</td>
     </tr>
     <tr>
         <td>get</td>
         <td>text</td>
         <td>-</td>
         <td>-</td>
+        <td>同上</td>
+        <td>topic,topic...</td>
         <td>-</td>
-        <td>-</td>
-        <td>[ok=]0.18，默认1</td>
-        <td>-</td>
-        <td>mockapi get boolean</td>
-        <td>时间戳</td>
+        <td>同上</td>
+        <td>同上</td>
     </tr>
     <tr>
         <td>get</td>
         <td>image</td>
         <td>-</td>
         <td>-</td>
+        <td>同上</td>
+        <td>同上</td>
         <td>-</td>
-        <td>-</td>
-        <td>[ok=]0.18，默认1</td>
-        <td>-</td>
-        <td>mockapi get boolean</td>
-        <td>时间戳</td>
+        <td>同上</td>
+        <td>同上</td>
     </tr>
     <tr>
         <td>get</td>
         <td>video</td>
         <td>-</td>
         <td>-</td>
+        <td>同上</td>
+        <td>同上</td>
+        <td>-</td>
+        <td>同上</td>
+        <td>同上</td>
+    </tr>
+    <tr>
+        <td rowspan="7">json</td>
+        <td>-</td>
+        <td>xxx.txt</td>
+        <td>-</td>
+        <td>同上</td>
         <td>-</td>
         <td>-</td>
-        <td>[ok=]0.18，默认1</td>
+        <td>同上</td>
+        <td>同上</td>
+    </tr>
+    <tr>
+        <td>json</td>
         <td>-</td>
-        <td>mockapi get boolean</td>
-        <td>时间戳</td>
+        <td>xxx.json</td>
+        <td>-</td>
+        <td>同上</td>
+        <td>-</td>
+        <td>-</td>
+        <td>同上</td>
+        <td>同上</td>
+    </tr>
+    <tr>
+        <td>json</td>
+        <td>-</td>
+        <td>xxx.ftl</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>同上</td>
+        <td>同上</td>
     </tr>
 </table>
