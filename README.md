@@ -168,7 +168,6 @@
         <td>delay=s</td>
     </tr>
     <tr>
-        <td>get</td>
         <td>float</td>
         <td>-</td>
         <td>同上</td>
@@ -179,7 +178,6 @@
         <td>同上</td>
     </tr>
     <tr>
-        <td>get</td>
         <td>boolean</td>
         <td>-</td>
         <td>-</td>
@@ -190,7 +188,6 @@
         <td>同上</td>
     </tr>
     <tr>
-        <td>get</td>
         <td>time</td>
         <td>-</td>
         <td>-</td>
@@ -201,7 +198,6 @@
         <td>同上</td>
     </tr>
     <tr>
-        <td>get</td>
         <td>text</td>
         <td>-</td>
         <td>-</td>
@@ -212,7 +208,6 @@
         <td>同上</td>
     </tr>
     <tr>
-        <td>get</td>
         <td>image</td>
         <td>-</td>
         <td>-</td>
@@ -223,7 +218,6 @@
         <td>同上</td>
     </tr>
     <tr>
-        <td>get</td>
         <td>video</td>
         <td>-</td>
         <td>-</td>
@@ -245,7 +239,6 @@
         <td>同上</td>
     </tr>
     <tr>
-        <td>json</td>
         <td>-</td>
         <td>xxx.json</td>
         <td>-</td>
@@ -256,7 +249,6 @@
         <td>同上</td>
     </tr>
     <tr>
-        <td>json</td>
         <td>-</td>
         <td>xxx.ftl</td>
         <td>-</td>
