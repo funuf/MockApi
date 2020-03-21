@@ -48,8 +48,12 @@ public class ValidResult implements Check {
      * 时间展示样式
      */
     private TimeFormat timeFormat;
+    /**
+     * 耗时
+     */
+    private Delay delay;
 
-    public ValidResult(Command cmd, Hit hit, ItemType type, Count count, File file, List<Topic> topics, Limit limit, TimeFormat timeFormat) {
+    public ValidResult(Command cmd, Hit hit, ItemType type, Count count, File file, List<Topic> topics, Limit limit, TimeFormat timeFormat, Delay delay) {
         this.cmd = cmd;
         this.hit = hit;
         this.type = type;
@@ -58,5 +62,6 @@ public class ValidResult implements Check {
         this.topics = topics;
         this.limit = limit;
         this.timeFormat = timeFormat;
+        this.delay = delay;
     }
 }

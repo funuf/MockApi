@@ -1,41 +1,3 @@
-//        new File("/").list() // D://下的直接文件（夹）
-//        new File(".") // pom.xml所在文件夹下所有内容
-
-git
-https://git-scm.com
-
-idea
-https://www.jetbrains.com/idea/documentation/
-
-maven
-https://maven.apache.org/
-
-spring
-https://spring.io/projects/spring-boot
-
-okio
-https://github.com/square/okio
-
-freemarker
-https://freemarker.apache.org/
-http://freemarker.foofun.cn/toc.html
-
-json
-https://www.json.org/json-en.html
-
-fastjson
-https://github.com/alibaba/fastjson
-
-java
-https://docs.oracle.com/javase/8/docs/api/overview-summary.html
-https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html
-
-lombok
-https://projectlombok.org/setup/maven
-
-rxjava
-https://github.com/ReactiveX/RxJava
-
 
 // list命令：limit默认=20  非法limit（小于1）时，按20返回    topic默认为没有分类，分类值可单可多
 // eg:   mockapi list text --count=n --topic=name,opetry,soup  --ok=0.35
@@ -64,6 +26,3 @@ https://github.com/ReactiveX/RxJava
 // 下下一个版本
 // mockapi append text/image/video --topic=...  --file=存储数据的文件(全文件名/文件名)   --path=存储数据的文件所需的父目录
 // mockapi clear text/image/video --topic=...
-
-
-卸载windows服务：  sc delete serverName

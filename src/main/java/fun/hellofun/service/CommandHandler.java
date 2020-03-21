@@ -1,6 +1,7 @@
 package fun.hellofun.service;
 
 import fun.hellofun.command.Command;
+import fun.hellofun.command.Delay;
 import fun.hellofun.exception.InvalidLimitEndpointException;
 import fun.hellofun.exception.LimitOverflowException;
 import fun.hellofun.exception.MissingLimitEndpointException;
@@ -38,6 +39,8 @@ public class CommandHandler {
                     return R.error("Command json need specify a file by --path or --file(json命令需要指定一个文件).");
                 case FileNotExist:
                     return R.error("File not exist(文件不存在).");
+                case NotSupportFileFormat:
+                    return R.error("Not support file format（文件格式不支持）.");
                 case InvalidLimitEndpoint:
                     return R.error(InvalidLimitEndpointException.TIP);
                 case MissingLimitEndpoint:
@@ -49,9 +52,18 @@ public class CommandHandler {
                     return R.error("System Exception(系统异常).");
             }
         }
+        ValidResult command = (ValidResult) checkResult;
+        // 耗时
+        if (command.getDelay().getValue() != Delay.NOW.getValue()) {
+            try {
+                Thread.sleep(command.getDelay().getValue() * 1000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         // 命中率
-        ValidResult command = (ValidResult) checkResult;
         if (command.getHit().getValue() == 0 || Math.random() > command.getHit().getValue()) {
             return R.error("未命中");
         }

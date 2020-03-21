@@ -58,6 +58,7 @@ public class CommandChecker {
             }
         }
 
+        Delay delay = Delay.extract(parts);
         List<Topic> topics = Topic.extract(parts, itemType);
         Hit hit = Hit.extract(parts);
         Count count = Count.extract(parts, cmd);
@@ -98,7 +99,12 @@ public class CommandChecker {
             if (!file.exists()) {
                 return InvalidReason.FileNotExist;
             }
+            if (!file.getName().endsWith(".txt")
+                    && !file.getName().endsWith(".json")
+                    && !file.getName().endsWith(".ftl")) {
+                return InvalidReason.NotSupportFileFormat;
+            }
         }
-        return new ValidResult(cmd, hit, itemType, count, file, topics, limit, timeFormat);
+        return new ValidResult(cmd, hit, itemType, count, file, topics, limit, timeFormat, delay);
     }
 }

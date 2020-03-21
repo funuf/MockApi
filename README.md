@@ -38,7 +38,8 @@
      </service>
     ```
       - 命令行定位到当前目录，执行```MockApi.exe install``即可；
-      - 去Windows服务列表中启动程序。
+      - 去Windows服务列表中启动程序；
+      - 若要**卸载**Windows服务，在命令行中执行```sc delete serverName```。
     
 4. 【Linux】下载[MockApi.jar](https://github.com/he110fun/MockApi/raw/master/MockApi.jar)，参考[这里](https://www.cnblogs.com/linnuo/p/9084125.html)运行jar包。
 
@@ -68,7 +69,7 @@
 
 #### 命令结构
 
-**MockApi**的命令由若干部分组成，如 ```mockapi cmd type topic limit count hit file delay```，除了```mockapi```和```cmd```的顺序固定，其他部分无顺序限制。各部分的详细定义及取值见下表：
+**MockApi**的命令由若干部分组成，如 ```mockapi cmd type topic limit count hit file delay```，除了```mockapi```和```cmd```的顺序固定，其他部分**无顺序限制**。各部分的详细定义及取值见下表：
 
 <table>
     <tr>
@@ -97,7 +98,7 @@
     </tr>
     <tr>
         <td>topic</td>
-        <td>表示一个string类型的元素的具体指向类型，多个主题以<strong>英文逗号</strong>连接。<br>当type=text时，支持name,soup<br>当type=image时，支持animal,banner,boy,car,food,girl,landscape,plant<br>当type=video时，支持tiktok,music</td>
+        <td>表示一个string类型的元素的具体指向类型，多个主题以<strong>英文逗号</strong>连接。<br><br>当type=text时，支持name,soup<br><br>当type=image时，支持animal,banner,boy,car,food,girl,landscape,plant<br><br>当type=video时，支持tiktok,music</td>
         <td>topic=animal<br>animal<br>topic=animal,boy<br>animal,boy</td>
         <td>type=string【选填】<br>默认所有</td>
     </tr>
@@ -133,7 +134,7 @@
     </tr>
     <tr>
         <td>format</td>
-        <td>当type=time时，指定时间的展示样式，需用大括号包裹。参见<a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html" target="_blank">SimpleDateFormat</a>。</td>
+        <td>当type=time时，指定时间的展示样式，需用<b>大括号包裹</b>。参见<a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html" target="_blank">SimpleDateFormat</a>。</td>
         <td>{yyyy年MM月dd日 HH时mm分ss秒}</td>
         <td>【选填】</td>
     </tr>
@@ -259,3 +260,103 @@
         <td>同上</td>
     </tr>
 </table>
+
+#### 命令说明
+
+1. ```get```命令语义上来说标识只要一个元素（而非集合），但指定的```count```大于1时，会和```list```命令有相同的行为；
+2. ```list```命令将会得到一个集合，当指定的```count```等于1时，会返回一个单元素集合；
+3. ```json```命令意在提供自定义结构的数据，该命令需要指定定义数据结构的文件。
+    - 需要保证文件内容的书写正确，否则将导致解析失败
+    - 可以通过```path```指定目录，通过```file```指定文件；```file```和```path```都接受全路径；
+    - ```file```和```path```中的**目录分割符需要使用英文.进行分割**，而不能使用/或\，如```C:.Users.Administrator.Desktop.template.abc.json```
+    - 当文件格式是```.txt```和```.json```时，表明【内容】和【结构】是固定的，**MockApi**不会填充随机内容；
+    - 当文件格式是```.txt```和```.json```时，支持指定```count```,此时会将文件内容当做一个元素；
+    - 若仅需要定义结构，内容由MockApi随机填充，则需要指定```.ftl```格式的文件。```.ftl```是[Freemarker](http://freemarker.foofun.cn/toc.html)的模板文件，您需要按照它的语法规定进行模板编写。
+    - 当文件格式是```.ftl```时，**MockApi**内置了一些随机数据供您使用。
+    
+#### 内置数据
+
+```
+mockapi
+|
+————image
+|       |
+|       ————animal（单张随机动物图片）
+|       |
+|       ————animals（数量随机的动物图片集合）
+|       |
+|       ————animals2（数量=2的动物图片集合）
+|       ...
+|       ————animals100（数量=100的动物图片集合）
+|       |
+|       ————其他topic
+|
+————video（与image结构一致）
+|     
+————text（与image结构一致）
+|   
+|   
+|   
+|   
+————integer（区间为[0,100]）
+|       |
+|       ————single（单个随机数）
+|       |
+|       ————multi（数量随机的随机数字集合）
+|       |
+|       ————multi2（数量=2的随机数字集合）
+|       ...
+|       ————multi100（数量=100的随机数字集合）
+|
+————float（与integer结构一致）
+|
+————boolean（与integer结构一致）
+|
+————time（与integer结构一致）
+```
+
+## 其他
+
+#### 思考
+
+- Java表现层技术有jsp、velocity、freemarker、thymeleaf，为什么使用freemarker？
+    - 因为jsp太古老了（不能生成源文件）；
+    - 因为velocity从Spring Boot 1.5之后接入困难；
+    - 因为对thymeleaf的写法不太感冒；
+- ```new File("/").list()```将列出项目所在磁盘的根目录下的直接文件夹，如 ```D:\```下的直接文件夹；
+- ```new File("."").list()```将列出```pom.xml```所在文件夹下的内容；
+
+#### 常用模板文件
+
+部分同学可能没有接触过[Freemarker](https://freemarker.apache.org/)，这里分享一些本人开发中常用的模板文件：
+- 123
+- 234
+
+#### 它山之石
+
+俗话说：它山之石可以攻玉。同样，**MockApi**也是借助/借鉴了各方的机慧才得以实现。特此记录以表感谢，同时方便日后查找。
+
+- [Git](https://git-scm.com)
+    - 公司项目最近由svn迁至git，频繁使用git-bash敲命令给了我命令式接口的灵感；
+    - git不仅仅可以对源代码进行版本控制，几乎任何文件都可以被管理（```.psd```,```.md```...）。
+- [IntelliJ IDEA](https://www.jetbrains.com/idea/)
+    - 一款Java开发IDE，与[Android Studio](https://developer.android.google.cn/studio?hl=zh-cn)、[WebStorm](https://www.jetbrains.com/webstorm/)师出同门，操作及快捷键什么的共性很大。
+- [Maven](https://maven.apache.org/)
+    - 一款经典的构建工具。
+- [Spring Boot](https://spring.io/projects/spring-boot)
+    - Java EE 主流开发框架。
+- [Okio](https://github.com/square/okio)
+    - 对Java IO的封装，使得IO操作很方便，**MockApi**中对文件的处理使用的该库。
+- [Freemarker](https://freemarker.apache.org/)
+    - 优秀的Java模板引擎，同时也有[中文文档](http://freemarker.foofun.cn/toc.html)。
+- [Json](https://www.json.org/json-en.html)
+    - 主流的数据交换及传输格式。
+- [Fastjson](https://github.com/alibaba/fastjson)
+    - Alibaba开源的Java语言的Json操作库。
+- [Java](https://docs.oracle.com/javase/8/docs/api/overview-summary.html)
+    - 开发语言，无需多说，使用**MockApi**可能需要参考[SimpleDateFormat](https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html)。
+- [Lombok](https://projectlombok.org/setup/maven)
+    - 对Java Bean的Setter/Getter等模板语法进行了大量简化。
+- [RxJava](https://github.com/ReactiveX/RxJava)
+    - Android开发中常用到的异步处理库，**MockApi**暂时没有使用。
+    

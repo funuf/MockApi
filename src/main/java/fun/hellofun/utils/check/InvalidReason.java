@@ -19,6 +19,8 @@ public enum InvalidReason implements Check{
     MissTragetFile,
     // json/template命令指向的文件不存在
     FileNotExist,
+    // 不支持的文件格式
+    NotSupportFileFormat,
     // 区间端点非法
     InvalidLimitEndpoint,
     // 缺少区间端点

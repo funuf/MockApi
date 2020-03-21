@@ -1,5 +1,4 @@
 # 模板文件
-*.ftl
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
