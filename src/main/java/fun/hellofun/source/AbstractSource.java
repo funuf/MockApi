@@ -1,6 +1,5 @@
 package fun.hellofun.source;
 
-import com.sun.org.apache.bcel.internal.generic.RET;
 import fun.hellofun.command.ItemType;
 import fun.hellofun.command.Limit;
 import fun.hellofun.command.TimeFormat;
@@ -10,15 +9,15 @@ import fun.hellofun.command.topic.Topic;
 import fun.hellofun.command.topic.VideoTopic;
 import fun.hellofun.jUtils.predicate.empty.Empty;
 import okio.Okio;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.lang.Nullable;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * 该类由 <b>张东冬</b> 于 2020年3月16日 星期一 19时06分00秒 创建；<br>
@@ -28,15 +27,17 @@ import java.util.Random;
  */
 public abstract class AbstractSource<T> {
 
+    private static final Logger logger = LoggerFactory.getLogger(AbstractSource.class);
+
     /**
      * 默认list接口的元素个数
      */
-    public static int DEFAULT_LIMIT = 20;
+    public static final int DEFAULT_LIMIT = 20;
 
     /**
      * 文件默认父路径
      */
-    public static String DEFAULT_FILE_PATH = "";
+    public static final String DEFAULT_FILE_PATH = "";
 
     private static final SourceText TEXT = new SourceText();
 
@@ -59,12 +60,12 @@ public abstract class AbstractSource<T> {
      * @param count 元素个数
      * @return 一个集合
      */
-    protected abstract List<T> list(Topic topic, Integer count);
+    protected abstract List<T> list(@Nullable Topic topic, Integer count);
 
     /**
      * 构建内置数据
      */
-    public static HashMap<String, Object> forFtl(ItemType type, int randomCount) {
+    public static Map<String, Object> forFtl(ItemType type, int randomCount) {
         switch (type) {
             case TEXT:
                 return SourceText.forFtl(randomCount);
@@ -109,6 +110,8 @@ public abstract class AbstractSource<T> {
             source = TEXT;
         } else if (type == ItemType.VIDEO) {
             source = VIDEO;
+        } else {
+            throw new UnsupportedOperationException("当前ItemType不被支持，ItemType=" + type);
         }
         if (Empty.yes(topics)) {
             return source.list(null, count);
@@ -138,11 +141,11 @@ public abstract class AbstractSource<T> {
      * 多个整数
      */
     public static List<Integer> integers(Limit limit, Integer count) {
-        return new ArrayList<Integer>() {{
-            for (Integer i = 0; i < count; i++) {
-                add(integer(limit));
-            }
-        }};
+        ArrayList<Integer> result = new ArrayList<>();
+        for (Integer i = 0; i < count; i++) {
+            result.add(integer(limit));
+        }
+        return result;
     }
 
     /**
@@ -153,7 +156,7 @@ public abstract class AbstractSource<T> {
             limit = Limit.DEFAULT_LIMIT;
         }
         double v = new Random().nextDouble();
-        return (new BigDecimal(v).doubleValue() - new BigDecimal(v).intValue())
+        return (BigDecimal.valueOf(v).doubleValue() - BigDecimal.valueOf(v).intValue())
                 + limit.getLowerLimit().intValue()
                 + new Random().nextInt(limit.getUpperLimit().intValue() - limit.getLowerLimit().intValue());
     }
@@ -162,11 +165,11 @@ public abstract class AbstractSource<T> {
      * 多个浮点数
      */
     public static List<Double> floats(Limit limit, Integer count) {
-        return new ArrayList<Double>() {{
-            for (Integer i = 0; i < count; i++) {
-                add(floatt(limit));
-            }
-        }};
+        ArrayList<Double> result = new ArrayList<>();
+        for (Integer i = 0; i < count; i++) {
+            result.add(floatt(limit));
+        }
+        return result;
     }
 
     /**
@@ -180,11 +183,11 @@ public abstract class AbstractSource<T> {
      * 多个布尔值
      */
     public static List<Boolean> bools(Integer count) {
-        return new ArrayList<Boolean>() {{
-            for (Integer i = 0; i < count; i++) {
-                add(bool());
-            }
-        }};
+        ArrayList<Boolean> result = new ArrayList<>();
+        for (Integer i = 0; i < count; i++) {
+            result.add(bool());
+        }
+        return result;
     }
 
     /**
@@ -202,11 +205,11 @@ public abstract class AbstractSource<T> {
      * 多个时间
      */
     public static Object times(TimeFormat format, Integer count) {
-        return new ArrayList() {{
-            for (Integer i = 0; i < count; i++) {
-                add(time(format));
-            }
-        }};
+        ArrayList result = new ArrayList();
+        for (Integer i = 0; i < count; i++) {
+            result.add(time(format));
+        }
+        return result;
     }
 
 
@@ -217,9 +220,9 @@ public abstract class AbstractSource<T> {
         try {
             return Okio.buffer(Okio.source(new ClassPathResource(path).getInputStream())).readUtf8();
         } catch (IOException e) {
-            e.printStackTrace();
-            return "";
+            logger.error(e.getMessage(), e);
         }
+        return "";
     }
 
 }

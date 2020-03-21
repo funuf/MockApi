@@ -33,7 +33,7 @@ public enum Command {
     public static Command extract(String[] parts) {
         for (String part : parts) {
             for (Command command : Command.values()) {
-                if (command.value.equals(part.toLowerCase())) {
+                if (command.value.equalsIgnoreCase(part)) {
                     return command;
                 }
             }

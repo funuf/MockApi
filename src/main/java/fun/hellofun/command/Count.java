@@ -23,41 +23,42 @@ public class Count {
     public static Count extract(String[] parts, Command cmd) {
         // 检测count=
         for (String part : parts) {
-            if (part.contains("count=")) {
-                int i = 0;
-                try {
-                    i = new BigDecimal(part.split("=")[1]).intValue();
-                } catch (Exception e) {
-                    // no-op
-                }
-                if (0 == i) {
-                    return new Count(AbstractSource.DEFAULT_LIMIT);
-                } else {
-                    return new Count(Math.abs(i));
-                }
+            if (!part.contains("count=")) {
+                continue;
+            }
+            int i = 0;
+            try {
+                i = new BigDecimal(part.split("=")[1]).intValue();
+            } catch (Exception e) {
+                // no-op
+            }
+            if (0 == i) {
+                return new Count(AbstractSource.DEFAULT_LIMIT);
+            } else {
+                return new Count(Math.abs(i));
             }
         }
 
         // 检测首个非0整数
         for (String part : parts) {
+            int i;
             try {
-                int i = Integer.parseInt(part);
-                if (i == 0) {
-                    return new Count(AbstractSource.DEFAULT_LIMIT);
-                }
-                return new Count(Math.abs(i));
+                i = Integer.parseInt(part);
             } catch (Exception e) {
-                // no-op
+                continue;
             }
+            if (i == 0) {
+                return new Count(AbstractSource.DEFAULT_LIMIT);
+            }
+            return new Count(Math.abs(i));
         }
-
-        // 默认值
-        if (cmd == Command.GET || cmd == Command.JSON) {
-            return new Count(1);
+        switch (cmd) {
+            case GET:
+            case JSON:
+                return new Count(1);
+            case LIST:
+            default:
+                return new Count(AbstractSource.DEFAULT_LIMIT);
         }
-        if (cmd == Command.LIST) {
-            return new Count(AbstractSource.DEFAULT_LIMIT);
-        }
-        return null;
     }
 }

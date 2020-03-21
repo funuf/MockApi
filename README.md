@@ -38,7 +38,7 @@
      </service>
     ```
       - 命令行定位到当前目录，执行```MockApi.exe install``即可；
-      - 去Windows服务列表中启动程序；
+      - 去Windows服务列表中启动程序，win+查找 ```services.msc```；
       - 若要**卸载**Windows服务，在命令行中执行```sc delete serverName```。
     
 4. 【Linux】下载[MockApi.jar](https://github.com/he110fun/MockApi/raw/master/MockApi.jar)，参考[这里](https://www.cnblogs.com/linnuo/p/9084125.html)运行jar包。
@@ -359,4 +359,8 @@ mockapi
     - 对Java Bean的Setter/Getter等模板语法进行了大量简化。
 - [RxJava](https://github.com/ReactiveX/RxJava)
     - Android开发中常用到的异步处理库，**MockApi**暂时没有使用。
+- [Alibaba p3c](https://github.com/alibaba/p3c)
+    - Alibaba Java代码规范插件，主要对编码风格上进行规范。
+- [SonarLint](https://www.sonarlint.org/)
+    - 一款旨在bug出现之前就消灭它的IDE插件。
     
