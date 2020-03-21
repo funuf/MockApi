@@ -11,6 +11,8 @@ import java.util.List;
 /**
  * 该方法由 <b>张东冬</b> 于 2020年3月18日 星期三 10时39分05秒 创建；<br>
  * 作用是：<b>命令解释合法结果，同时包含命令的各个有效部分</b>；<br>
+ *
+ * @author zdd
  */
 @Data
 @Accessors(chain = true)

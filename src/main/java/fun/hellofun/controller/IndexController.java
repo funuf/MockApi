@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 该类由 <b>张东冬</b> 于 2020年3月16日 星期一 15时08分41秒 创建；<br>
  * 作用是：<b>首项控制器</b>；<br>
+ *
+ * @author zdd
  */
 @RestController
 public class IndexController {

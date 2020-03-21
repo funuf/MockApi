@@ -9,7 +9,7 @@ import fun.hellofun.utils.check.Check;
 import fun.hellofun.utils.check.InvalidReason;
 import fun.hellofun.jUtils.classes.map.R;
 import fun.hellofun.utils.check.ValidResult;
-import fun.hellofun.utils.handler.JSONHandler;
+import fun.hellofun.utils.handler.JsonHandler;
 import fun.hellofun.utils.handler.GetHandler;
 import fun.hellofun.utils.handler.ListHandler;
 import org.springframework.stereotype.Service;
@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 /**
  * 该类由 <b>张东冬</b> 于 2020年3月16日 星期一 15时29分51秒 创建；<br>
  * 作用是：<b>命令处理器</b>；<br>
+ *
+ * @author zdd
  */
 @Service
 public class CommandHandler {
@@ -82,7 +84,7 @@ public class CommandHandler {
         if (command.getCmd() == Command.JSON) {
             // 返回json 或 填充模板
             try {
-                return R.ok(JSONHandler.get(command.getFile(), command.getCount() == null ? null : command.getCount().getValue()));
+                return R.ok(JsonHandler.get(command.getFile(), command.getCount() == null ? null : command.getCount().getValue()));
             } catch (Exception e) {
                 e.printStackTrace();
                 return R.error(e.getMessage());

@@ -1,6 +1,6 @@
 package fun.hellofun.command;
 
-import fun.hellofun.source.Source;
+import fun.hellofun.source.AbstractSource;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 /**
  * 该类由 <b>张东冬</b> 于 2020年3月17日 星期二 20时06分14秒 创建；<br>
  * 作用是：<b>数量限制</b>；<br>
+ *
+ * @author zdd
  */
 public class Count {
 
@@ -27,12 +29,11 @@ public class Count {
                     i = new BigDecimal(part.split("=")[1]).intValue();
                 } catch (Exception e) {
                     // no-op
-                } finally {
-                    if (0 == i) {
-                        return new Count(Source.DEFAULT_LIMIT);
-                    } else {
-                        return new Count(Math.abs(i));
-                    }
+                }
+                if (0 == i) {
+                    return new Count(AbstractSource.DEFAULT_LIMIT);
+                } else {
+                    return new Count(Math.abs(i));
                 }
             }
         }
@@ -42,7 +43,7 @@ public class Count {
             try {
                 int i = Integer.parseInt(part);
                 if (i == 0) {
-                    return new Count(Source.DEFAULT_LIMIT);
+                    return new Count(AbstractSource.DEFAULT_LIMIT);
                 }
                 return new Count(Math.abs(i));
             } catch (Exception e) {
@@ -55,7 +56,7 @@ public class Count {
             return new Count(1);
         }
         if (cmd == Command.LIST) {
-            return new Count(Source.DEFAULT_LIMIT);
+            return new Count(AbstractSource.DEFAULT_LIMIT);
         }
         return null;
     }

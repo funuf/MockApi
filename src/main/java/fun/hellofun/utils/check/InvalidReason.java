@@ -3,8 +3,10 @@ package fun.hellofun.utils.check;
 /**
  * 该类由 <b>张东冬</b> 于 2020年3月16日 星期一 15时35分37秒 创建；<br>
  * 作用是：<b>非法命令结果</b>；<br>
+ *
+ * @author zdd
  */
-public enum InvalidReason implements Check{
+public enum InvalidReason implements Check {
     // 太多空格
     MultiSpace,
     // 非法开头

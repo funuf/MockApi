@@ -1,5 +1,6 @@
 package fun.hellofun.source;
 
+import com.sun.org.apache.bcel.internal.generic.RET;
 import fun.hellofun.command.ItemType;
 import fun.hellofun.command.Limit;
 import fun.hellofun.command.TimeFormat;
@@ -15,14 +16,17 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 /**
  * 该类由 <b>张东冬</b> 于 2020年3月16日 星期一 19时06分00秒 创建；<br>
  * 作用是：<b>内嵌数据源</b>；<br>
+ *
+ * @author zdd
  */
-public abstract class Source<T> {
+public abstract class AbstractSource<T> {
 
     /**
      * 默认list接口的元素个数
@@ -42,13 +46,36 @@ public abstract class Source<T> {
 
     /**
      * 获取单个元素
+     *
+     * @param topic 元素所属主题
+     * @return 单个元素
      */
     protected abstract T get(Topic topic);
 
     /**
      * 获取多个元素
+     *
+     * @param topic 元素所属主题
+     * @param count 元素个数
+     * @return 一个集合
      */
     protected abstract List<T> list(Topic topic, Integer count);
+
+    /**
+     * 构建内置数据
+     */
+    public static HashMap<String, Object> forFtl(ItemType type, int randomCount) {
+        switch (type) {
+            case TEXT:
+                return SourceText.forFtl(randomCount);
+            case IMAGE:
+                return SourceImage.forFtl(randomCount);
+            case VIDEO:
+                return SourceVideo.forFtl(randomCount);
+            default:
+                return null;
+        }
+    }
 
     /**
      * 单个文本
@@ -75,7 +102,7 @@ public abstract class Source<T> {
      * 取多个 文本、图片、视频
      */
     public static <T extends Topic> List<String> take(ItemType type, List<T> topics, Integer count) {
-        Source source = null;
+        AbstractSource source = null;
         if (type == ItemType.IMAGE) {
             source = IMAGE;
         } else if (type == ItemType.TEXT) {

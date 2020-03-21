@@ -1,13 +1,27 @@
 package fun.hellofun.command;
 
 /**
- * 该类由 <b>张东冬</b> 于 2020年3月17日 星期二 19时20分25秒 创建；<br>
+ * 于 2020年3月17日 星期二 19时20分25秒  创建；<br>
  * 作用是：<b>命令</b>；<br>
+ *
+ * @author zdd
  */
 public enum Command {
+    /**
+     * list命令
+     */
     LIST("list"),
+    /**
+     * get命令
+     */
     GET("get"),
+    /**
+     * json命令
+     */
     JSON("json"),
+    /**
+     * config配置命令
+     */
     CONFIG("config");
 
     private String value;

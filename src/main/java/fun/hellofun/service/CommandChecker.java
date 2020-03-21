@@ -6,6 +6,7 @@ import fun.hellofun.exception.InvalidLimitEndpointException;
 import fun.hellofun.exception.LimitOverflowException;
 import fun.hellofun.exception.MissingLimitEndpointException;
 import fun.hellofun.jUtils.predicate.empty.Empty;
+import fun.hellofun.utils.Constants;
 import fun.hellofun.utils.check.Check;
 import fun.hellofun.utils.check.InvalidReason;
 import fun.hellofun.utils.check.ValidResult;
@@ -18,29 +19,31 @@ import java.util.regex.Matcher;
 /**
  * 该类由 <b>张东冬</b> 于 2020年3月16日 星期一 15时29分21秒 创建；<br>
  * 作用是：<b>命令解释器：检验命令合法性，并整理为相对固定的格式供解释器使用</b>；<br>
+ *
+ * @author zdd
  */
 @Service
 public class CommandChecker {
     public Check check(String command) {
         // 循环，将相邻的空格合并
-        for (int i = 0; i < 3; i++) {
-            command = command.replaceAll("  ", " ");
+        for (int i = 0; i < Constants.INT_3; i++) {
+            command = command.replaceAll(Constants.STRING_SPACE_2, Constants.STRING_SPACE);
         }
-        if (command.contains("  ")) {
+        if (command.contains(Constants.STRING_SPACE_2)) {
             return InvalidReason.MultiSpace;
         }
 
         // 以mock开头
-        if (!command.startsWith("mockapi")) {
+        if (!command.startsWith(Constants.MOCK_API)) {
             return InvalidReason.InvalidStartWith;
         }
 
         // 命令组成部分
-        String[] parts = command.split(" ");
-        if (!"mockapi".equals(parts[0].toLowerCase())) {
+        String[] parts = command.split(Constants.STRING_SPACE);
+        if (!Constants.MOCK_API.equals(parts[0].toLowerCase())) {
             return InvalidReason.InvalidStartWith;
         }
-        if (2 > parts.length) {
+        if (Constants.INT_2 > parts.length) {
             return InvalidReason.MissPart;
         }
 
@@ -91,7 +94,7 @@ public class CommandChecker {
             if (Empty.yes(filePath)) {
                 return InvalidReason.MissTragetFile;
             }
-            int i = filePath.lastIndexOf(".");
+            int i = filePath.lastIndexOf(Constants.STRING_DOT);
             String suffix = filePath.substring(i);
             // https://blog.csdn.net/weixin_34321977/article/details/91658732
             String prefix = filePath.replaceAll("\\.", Matcher.quoteReplacement(File.separator)).substring(0, i);
@@ -99,9 +102,9 @@ public class CommandChecker {
             if (!file.exists()) {
                 return InvalidReason.FileNotExist;
             }
-            if (!file.getName().endsWith(".txt")
-                    && !file.getName().endsWith(".json")
-                    && !file.getName().endsWith(".ftl")) {
+            if (!file.getName().endsWith(Constants.FORMAT_TXT)
+                    && !file.getName().endsWith(Constants.FORMAT_JSON)
+                    && !file.getName().endsWith(Constants.FORMAT_FTL)) {
                 return InvalidReason.NotSupportFileFormat;
             }
         }

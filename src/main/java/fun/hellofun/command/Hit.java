@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 /**
  * 该类由 <b>张东冬</b> 于 2020年3月18日 星期三 8时38分53秒 创建；<br>
  * 作用是：<b>命中率：  [0,1]区间的值，忽略正负数，以绝对值为准</b>；<br>
+ *
+ * @author zdd
  */
 public class Hit {
     private double value;

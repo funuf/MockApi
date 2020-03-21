@@ -12,6 +12,8 @@ import java.util.*;
 /**
  * 该类由 <b>张东冬</b> 于 2020年3月19日 星期四 15时33分06秒 创建；<br>
  * 作用是：<b>integer/float的上下限</b>；<br>
+ *
+ * @author zdd
  */
 @Data
 @Accessors(chain = true)
