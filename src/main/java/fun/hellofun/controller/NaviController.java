@@ -2,13 +2,16 @@ package fun.hellofun.controller;
 
 import com.alibaba.fastjson.JSON;
 import fun.hellofun.jUtils.classes.map.R;
+import fun.hellofun.jUtils.predicate.empty.Empty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import okio.Okio;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.StringWriter;
 import java.util.*;
 
 /**
@@ -93,10 +96,15 @@ public class NaviController {
      */
     @RequestMapping("see")
     public R see(String name) throws Exception {
+        if (Empty.yes(links)) {
+            // 读取文本内容
+            links = JSON.parseArray(Okio.buffer(Okio.source(new File(FILE_PATH))).readUtf8(), Link.class);
+        }
         for (Link link : links) {
             if (link.getName().equals(name)) {
                 link.setViews(link.getViews() + 1);
-                Okio.buffer(Okio.sink(new File(FILE_PATH))).writeUtf8(JSON.toJSONString(links));
+                String string = JSON.toJSONString(links);
+                Okio.buffer(Okio.sink(new File(FILE_PATH))).writeUtf8(string).flush();
                 return R.ok();
             }
         }
