@@ -6,6 +6,8 @@ import fun.hellofun.jUtils.predicate.empty.Empty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import okio.Okio;
+import org.springframework.util.StringUtils;
+import org.springframework.util.comparator.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -107,11 +109,13 @@ public class NaviController {
         for (Link link : links) {
             if (link.getName().equals(name)) {
                 link.setViews(link.getViews() + 1);
-                String string = JSON.toJSONString(links);
-                Okio.buffer(Okio.sink(new File(FILE_PATH))).writeUtf8(string).flush();
-                return R.ok();
+                break;
             }
         }
+        Collections.sort(links, Comparator.comparing(Link::getFirstChar));
+
+        String string = JSON.toJSONString(links);
+        Okio.buffer(Okio.sink(new File(FILE_PATH))).writeUtf8(string).flush();
         return R.ok();
     }
 
