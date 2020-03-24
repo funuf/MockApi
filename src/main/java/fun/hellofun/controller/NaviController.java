@@ -45,7 +45,11 @@ public class NaviController {
         // 按常用量，取前10个
         List<Link> linksByViews = JSON.parseArray(Okio.buffer(Okio.source(new File(FILE_PATH))).readUtf8(), Link.class);
         linksByViews.sort(Comparator.comparingInt(Link::getViews));
+        Collections.reverse(linksByViews);
         linksByViews = linksByViews.subList(0, 10);
+        for (Link link : linksByViews) {
+            link.setBold(true);
+        }
 
         // 按所属模块
         List<String> belongTos = new ArrayList<>();
@@ -110,7 +114,6 @@ public class NaviController {
         }
         return R.ok();
     }
-
 
     /**
      * 代表一个网站
